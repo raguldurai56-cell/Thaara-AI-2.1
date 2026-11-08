@@ -42,6 +42,8 @@ def allCommands(command):
     if "youtube" in text and ("play" in text or "song" in text or "music" in text):
         stop_words = {"open", "youtube", "play", "song", "songs", "music"}
         query = " ".join(word for word in text.split() if word not in stop_words)
+        if query == "tamil":
+            query = "Tamil songs"
         return open_youtube_search(query or "Tamil songs")
     if text in {"hello", "hi", "hey"}:
         return speak("Hello. I am ready to help.")
