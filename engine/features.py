@@ -4,8 +4,13 @@ import subprocess
 
 
 def speak(text):
-    """Print a response; optional TTS can be layered on later."""
+    """Print and speak a response with the selected offline female voice."""
     print(f"Thaara: {text}")
+    try:
+        from .voice_output import voice_output
+        voice_output.speak(text)
+    except Exception:
+        pass
     return text
 
 

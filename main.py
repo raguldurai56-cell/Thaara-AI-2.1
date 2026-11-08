@@ -851,6 +851,14 @@ def start():
     flask_thread = threading.Thread(target=run_flask, daemon=True)
     flask_thread.start()
     print("Flask thread started for chatbot voice input")
+
+    from engine.wake_word import wake_word_service
+    def on_wake_word():
+        speak("Yes, I am listening.")
+        command = listenForCommand(os.getenv("VOICE_MODE", "auto"))
+        if command:
+            allCommands(command)
+    wake_word_service.start(on_activate=on_wake_word)
     
 
     

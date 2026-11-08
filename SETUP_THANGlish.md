@@ -62,3 +62,21 @@ OLLAMA_MODEL=llama3.2:3b
 
 Ollama install panni `ollama pull llama3.2:3b` run pannina, API key illama local
 AI work aagum.
+
+## One-time install + “Hi Thaara”
+
+Windows laptop-la oru thadava `install.bat` double-click pannunga. Appuram
+`run_thaara.bat` run pannina, app background-la wake word listen pannum.
+
+```text
+Hi Thaara
+```
+
+nu sonna Thaara activate aagi, “Yes, I am listening” nu female offline voice-la
+reply pannum. Default voice system-la irukkura female voice auto-select pannum;
+voice exact-a Iron Man Friday voice clone illa, but similar calm female assistant
+style. `THAARA_TTS=1` keep pannunga.
+
+PyAudio install error vandha, Windows-la `pip install pipwin` then
+`pipwin install pyaudio` try pannunga. Mic permission Windows Settings-la allow
+pannanum.
