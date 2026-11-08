@@ -33,6 +33,8 @@ gtts==2.4.0
 # Optional Dependencies
 pvporcupine==3.0.0
 hugchat==0.3.4
+# Optional offline voice recognition; install separately with a Vosk model.
+# vosk
 
 # Data Visualization
 matplotlib==3.8.2

@@ -16,6 +16,17 @@ def _load_env_file():
 def _cloud_response(prompt, provider="auto", model=None):
     _load_env_file()
     provider = (provider or "auto").lower()
+    if provider in ("auto", "offline", "ollama") and os.getenv("OLLAMA_MODEL"):
+        try:
+            import requests
+            response = requests.post("http://127.0.0.1:11434/api/generate", json={"model": model or os.environ["OLLAMA_MODEL"], "prompt": prompt, "stream": False}, timeout=45)
+            response.raise_for_status()
+            return response.json().get("response", "").strip() or None
+        except Exception:
+            if provider == "ollama":
+                return None
+    if provider == "offline":
+        return None
     if provider in ("auto", "groq") and os.getenv("GROQ_API_KEY"):
         try:
             from groq import Groq
@@ -47,5 +58,7 @@ class DualAI:
 
 
 def get_simple_response(prompt, provider="auto", model=None):
+    _load_env_file()
+    provider = (provider or os.getenv("AI_MODE", "auto")).lower()
     response = _cloud_response(prompt, provider, model)
     return response or f"Offline mode: I received your request: {prompt}"

@@ -127,6 +127,11 @@ def start():
     def getGestureState():
         return gesture_controller.get_state()
 
+    @eel.expose
+    def listenForCommand(mode="auto"):
+        from engine.voice_input import voice_input
+        return voice_input.listen_and_transcribe(mode=mode)
+
     if os.getenv("THAARA_GESTURES", "0") == "1":
         if gesture_controller.start():
             print("Gesture tracking enabled")

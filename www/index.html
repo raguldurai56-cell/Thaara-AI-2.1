@@ -22,6 +22,8 @@
     <div id="core" class="core"><img src="assets/thaara_core.gif" alt="Thaara robotic AI core"></div>
     <p id="status">Ready in offline-safe mode.</p>
     <button id="hello">Say hello</button>
+    <select id="voiceMode" aria-label="Voice mode"><option value="auto">Online + Offline</option><option value="online">Online</option><option value="offline">Offline</option></select>
+    <button id="listen">Listen</button>
     <div id="output"></div>
   </div>
   <script>
@@ -29,6 +31,13 @@
       const output = document.querySelector('#output');
       if (window.eel) output.textContent = await eel.chatbot_chat('Hello')();
       else output.textContent = 'Thaara is ready.';
+    });
+    document.querySelector('#listen').addEventListener('click', async () => {
+      const output = document.querySelector('#output');
+      if (!window.eel || !eel.listenForCommand) { output.textContent = 'Install microphone support first.'; return; }
+      output.textContent = 'Listening...';
+      const text = await eel.listenForCommand(document.querySelector('#voiceMode').value)();
+      output.textContent = text || 'Voice kekkala. Mic permission, quiet room, and SpeechRecognition/PyAudio check pannunga.';
     });
     async function refreshGesture() {
       if (!window.eel || !eel.getGestureState) return;
