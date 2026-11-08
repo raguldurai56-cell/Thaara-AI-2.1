@@ -120,6 +120,19 @@ def start():
     
     eel.init("www")
 
+    from engine.gesture_controller import gesture_controller
+    gesture_controller.state_file = os.path.join("www", "gesture_state.json")
+
+    @eel.expose
+    def getGestureState():
+        return gesture_controller.get_state()
+
+    if os.getenv("THAARA_GESTURES", "0") == "1":
+        if gesture_controller.start():
+            print("Gesture tracking enabled")
+        else:
+            print("Gesture tracking unavailable; continuing without webcam")
+
     playAssistantSound()
     
     @eel.expose
