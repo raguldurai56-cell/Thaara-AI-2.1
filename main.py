@@ -1,5 +1,8 @@
 import os
-import eel
+try:
+    import eel
+except ImportError:
+    from eel_compat import eel
 import threading
 import time
 import sys
@@ -132,7 +135,8 @@ def start():
             with open('biometric_config.json', 'r') as f:
                 return json.load(f)
         except:
-            return {"face_auth_enabled": False, "fingerprint_auth_enabled": True}
+            # Hardware authentication must be explicitly enabled by the user.
+            return {"face_auth_enabled": False, "fingerprint_auth_enabled": False}
     
     def save_biometric_config(config):
         with open('biometric_config.json', 'w') as f:
@@ -764,7 +768,11 @@ def start():
     
     # Add HTTP route for voice input
     from flask import Flask, request, jsonify
-    from flask_cors import CORS
+    try:
+        from flask_cors import CORS
+    except ImportError:
+        def CORS(app):
+            return app
     flask_app = Flask(__name__)
     CORS(flask_app)
     
@@ -828,6 +836,11 @@ def start():
     
 
     
-    os.system('start msedge.exe --app="http://localhost:8000/index.html"')
+    if sys.platform == 'win32':
+        os.system('start msedge.exe --app="http://localhost:8000/index.html"')
 
     eel.start('index.html', mode=None, host='localhost', block=True)
+
+
+if __name__ == '__main__':
+    start()

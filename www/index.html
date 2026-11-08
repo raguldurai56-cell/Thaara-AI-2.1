@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thaara AI 2.1</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 4rem auto; padding: 0 1rem; background: #101827; color: #eef2ff; }
+    .card { padding: 2rem; border-radius: 1rem; background: #1b2942; box-shadow: 0 1rem 3rem #0004; }
+    button { padding: .7rem 1rem; border: 0; border-radius: .5rem; background: #65d3ff; cursor: pointer; }
+    #output { white-space: pre-wrap; min-height: 4rem; margin-top: 1rem; color: #c8d7f5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Thaara AI 2.1</h1>
+    <p id="status">Ready in offline-safe mode.</p>
+    <button id="hello">Say hello</button>
+    <div id="output"></div>
+  </div>
+  <script>
+    document.querySelector('#hello').addEventListener('click', async () => {
+      const output = document.querySelector('#output');
+      if (window.eel) output.textContent = await eel.chatbot_chat('Hello')();
+      else output.textContent = 'Thaara is ready.';
+    });
+  </script>
+</body>
+</html>
