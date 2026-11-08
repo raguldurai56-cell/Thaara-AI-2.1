@@ -1,4 +1,7 @@
 """Command processing that works offline and is safe by default."""
+import urllib.parse
+import webbrowser
+
 from .features import speak
 from .system_monitor import getSystemStats
 
@@ -23,12 +26,23 @@ class EmotionSystem:
 emotion_system = EmotionSystem()
 
 
+def open_youtube_search(query):
+    query = (query or "Tamil songs").strip()
+    url = "https://www.youtube.com/results?search_query=" + urllib.parse.quote_plus(query)
+    opened = webbrowser.open(url)
+    return speak(f"Opening YouTube search for {query}.") if opened else f"YouTube URL: {url}"
+
+
 def allCommands(command):
     text = (command or "").strip().lower()
     if not text:
         return "Please provide a command."
     if "system status" in text or "system stats" in text:
         return getSystemStats()
+    if "youtube" in text and ("play" in text or "song" in text or "music" in text):
+        stop_words = {"open", "youtube", "play", "song", "songs", "music"}
+        query = " ".join(word for word in text.split() if word not in stop_words)
+        return open_youtube_search(query or "Tamil songs")
     if text in {"hello", "hi", "hey"}:
         return speak("Hello. I am ready to help.")
     response = f"I received: {command}"
